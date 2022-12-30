@@ -30,17 +30,20 @@ func AuthMiddleware(auto401 bool) gin.HandlerFunc {
 		fmt.Println(request.AuthorizationHeaderExtractor)
 		fmt.Println(request.OAuth2Extractor)
 
-		token, err := request.ParseFromRequest(c.Request, request.AuthorizationHeaderExtractor, func(token *jwt.Token) (interface{}, error) {
+		token, _ := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt.Token) (interface{}, error) {
+			fmt.Println(token)
 			return []byte(common.NBSecretPassword), nil
 		})
 
-		if err != nil {
-			if auto401 {
-				c.AbortWithError(http.StatusUnauthorized, err)
-			}
-			return
-		}
-		userID, _, err := common.validateToken(token.Raw)
+		// if err != nil {
+		// 	if auto401 {
+		// 		c.AbortWithError(http.StatusUnauthorized, err)
+		// 	}
+		// 	return
+		// }
+		fmt.Println(token.Raw)
+
+		userID, _, err := common.ValidateToken(token.Raw)
 		if err != nil {
 			c.AbortWithError(http.StatusUnauthorized, err)
 		}

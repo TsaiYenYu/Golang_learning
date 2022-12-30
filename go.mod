@@ -1,9 +1,11 @@
-module github.com/gothinkster/golang-gin-realworld-example-app
+module github.com/TsaiYenYu/Golang_learning
 
 go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.8.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/gosimple/slug v1.12.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/stretchr/testify v1.8.0
@@ -19,8 +21,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.0 // indirect
 	github.com/goccy/go-json v0.9.11 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.2 // indirect

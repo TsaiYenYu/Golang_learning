@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
+
 	"gopkg.in/go-playground/validator.v9"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ import (
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-var jwtKey = []byte("FDr1VjVQiSiybYJrQZNt8Vfd7bFEsKP6vNX1brOSiWl0mAIVCxJiR4/T3zpAlBKc2/9Lw2ac4IwMElGZkssfj3dqwa7CQC7IIB+nVxiM1c9yfowAZw4WQJ86RCUTXaXvRX8JoNYlgXcRrK3BK0E/fKCOY1+izInW3abf0jEeN40HJLkXG6MZnYdhzLnPgLL/TnIFTTAbbItxqWBtkz6FkZTG+dkDSXN7xNUxlg==")
+var jwtKey = []byte("FDr1VjVQiSiybYJrQZNt8Vfd7bFEsKP6vNX1kssfj3dqwa7CQC7IIB")
 
 type authClaims struct {
 	jwt.StandardClaims
@@ -32,14 +33,18 @@ func GenToken(id uint, userName string) string {
 		StandardClaims: jwt.StandardClaims{
 			Subject:   userName,
 			ExpiresAt: expiresAt,
+			Id:        "123",
 		},
 		UserID: id,
 	})
-	tokenString, _ := token.SignedString(jwtKey)
+	tokenString, err := token.SignedString([]byte("sssss"))
+	if err != nil {
+		return "no token"
+	}
 	return tokenString
 }
 
-func validateToken(tokenString string) (uint, string, error) {
+func ValidateToken(tokenString string) (uint, string, error) {
 	var claims authClaims
 	token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
