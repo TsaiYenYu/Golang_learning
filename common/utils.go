@@ -6,16 +6,15 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
-
-	"gopkg.in/go-playground/validator.v9"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/golang-jwt/jwt/v4"
+	"gopkg.in/go-playground/validator.v9"
 )
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-var jwtKey = []byte("FDr1VjVQiSiybYJrQZNt8Vfd7bFEsKP6vNX1kssfj3dqwa7CQC7IIB")
+var jwtKey = []byte("FDr1VjVQiSiybYJrQZNt8Vfd7bFEsKP6vNX1brOSiWl0mAIVCxJiR4/T3zpAlBKc2/9Lw2ac4IwMElGZkssfj3dqwa7CQC7IIB+nVxiM1c9yfowAZw4WQJ86RCUTXaXvRX8JoNYlgXcRrK3BK0E/fKCOY1+izInW3abf0jEeN40HJLkXG6MZnYdhzLnPgLL/TnIFTTAbbItxqWBtkz6FkZTG+dkDSXN7xNUxlg==")
+var JwtKeyString string = "FDr1VjVQiSiybYJrQZNt8Vfd7bFEsKP6vNX1brOSiWl0mAIVCxJiR4/T3zpAlBKc2/9Lw2ac4IwMElGZkssfj3dqwa7CQC7IIB+nVxiM1c9yfowAZw4WQJ86RCUTXaXvRX8JoNYlgXcRrK3BK0E/fKCOY1+izInW3abf0jEeN40HJLkXG6MZnYdhzLnPgLL/TnIFTTAbbItxqWBtkz6FkZTG+dkDSXN7xNUxlg=="
 
 type authClaims struct {
 	jwt.StandardClaims
@@ -27,21 +26,20 @@ const NBSecretPassword = "A String Very Very Very Strong!!@##$!@#$"
 const NBRandomPassword = "A String Very Very Very Niubilty!!@##$!@#4"
 
 // A Util function to generate jwt_token which can be used in the request header
-func GenToken(id uint, userName string) string {
+func generateToken(user UserModel) (string, error) {
 	expiresAt := time.Now().Add(24 * time.Hour).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, authClaims{
 		StandardClaims: jwt.StandardClaims{
-			Subject:   userName,
+			Subject:   user.Username,
 			ExpiresAt: expiresAt,
-			Id:        "123",
 		},
-		UserID: id,
+		UserID: user.ID,
 	})
-	tokenString, err := token.SignedString([]byte("sssss"))
+	tokenString, err := token.SignedString(jwtKey)
 	if err != nil {
-		return "no token"
+		return "", err
 	}
-	return tokenString
+	return tokenString, nil
 }
 
 func ValidateToken(tokenString string) (uint, string, error) {
@@ -53,7 +51,7 @@ func ValidateToken(tokenString string) (uint, string, error) {
 		return jwtKey, nil
 	})
 	if err != nil {
-		return 0, "", err
+		return 0, "", errors.New("invalid token")
 	}
 	if !token.Valid {
 		return 0, "", errors.New("invalid token")

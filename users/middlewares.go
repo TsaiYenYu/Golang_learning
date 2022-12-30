@@ -2,7 +2,6 @@ package users
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/TsaiYenYu/Golang_learning/common"
 	"github.com/gin-gonic/gin"
@@ -27,26 +26,27 @@ func UpdateContextUserModel(c *gin.Context, my_user_id uint) {
 func AuthMiddleware(auto401 bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		UpdateContextUserModel(c, 0)
-		fmt.Println(request.AuthorizationHeaderExtractor)
-		fmt.Println(request.OAuth2Extractor)
 
-		token, _ := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt.Token) (interface{}, error) {
-			fmt.Println(token)
-			return []byte(common.NBSecretPassword), nil
+		token, err := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt.Token) (interface{}, error) {
+
+			return []byte(common.JwtKeyString), nil
 		})
+		// fmt.Println(err)
 
-		// if err != nil {
-		// 	if auto401 {
-		// 		c.AbortWithError(http.StatusUnauthorized, err)
-		// 	}
-		// 	return
-		// }
-		fmt.Println(token.Raw)
+		if err != nil {
+			if auto401 {
+				// c.AbortWithError(http.StatusUnauthorized, err)
+			} else {
+				return
+			}
+		}
 
 		userID, _, err := common.ValidateToken(token.Raw)
 		if err != nil {
-			c.AbortWithError(http.StatusUnauthorized, err)
+			// c.AbortWithError(http.StatusUnauthorized, err)
 		}
+		fmt.Println(userID)
+
 		UpdateContextUserModel(c, userID)
 	}
 }
