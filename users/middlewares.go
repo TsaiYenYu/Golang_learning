@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/TsaiYenYu/Golang_learning/common"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/golang-jwt/jwt/v4/request"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
 )
 
 // A helper to write user_id and user_model to the context

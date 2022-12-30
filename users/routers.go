@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/TsaiYenYu/Golang_learning/common"
 	"github.com/gin-gonic/gin"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
 )
 
 func UsersRegister(router *gin.RouterGroup) {

@@ -3,9 +3,9 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 
-	"github.com/gothinkster/golang-gin-realworld-example-app/articles"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
-	"github.com/gothinkster/golang-gin-realworld-example-app/users"
+	"github.com/TsaiYenYu/Golang_learning/common/articles"
+	"github.com/TsaiYenYu/Golang_learning/common/common"
+	"github.com/TsaiYenYu/Golang_learning/common/users"
 	"github.com/jinzhu/gorm"
 )
 

@@ -1,18 +1,20 @@
 package users
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"bytes"
 	"fmt"
-	"github.com/jinzhu/gorm"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	_ "regexp"
+
+	"github.com/TsaiYenYu/Golang_learning/common"
+	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
 )
 
 var image_url = "https://golang.org/doc/gopher/frontpage.png"
@@ -91,7 +93,7 @@ func TestUserModel(t *testing.T) {
 	asserts.Equal(false, a.isFollowing(b), "isFollowing should be right after a unFollowing b")
 }
 
-//Reset test DB and create new one with mock data
+// Reset test DB and create new one with mock data
 func resetDBWithMock() {
 	common.TestDBFree(test_db)
 	test_db = common.TestDBInit()
@@ -103,7 +105,7 @@ func HeaderTokenMock(req *http.Request, u uint) {
 	req.Header.Set("Authorization", fmt.Sprintf("Token %v", common.GenToken(u)))
 }
 
-//You could write the init logic like reset database code here
+// You could write the init logic like reset database code here
 var unauthRequestTests = []struct {
 	init           func(*http.Request)
 	url            string
@@ -479,8 +481,8 @@ func TestWithoutAuth(t *testing.T) {
 	}
 }
 
-//This is a hack way to add test database for each case, as whole test will just share one database.
-//You can read TestWithoutAuth's comment to know how to not share database each case.
+// This is a hack way to add test database for each case, as whole test will just share one database.
+// You can read TestWithoutAuth's comment to know how to not share database each case.
 func TestMain(m *testing.M) {
 	test_db = common.TestDBInit()
 	AutoMigrate()

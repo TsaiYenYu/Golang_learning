@@ -1,10 +1,10 @@
 package articles
 
 import (
+	"github.com/TsaiYenYu/Golang_learning/common"
+	"github.com/TsaiYenYu/Golang_learning/users"
 	"github.com/gin-gonic/gin"
 	"github.com/gosimple/slug"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
-	"github.com/gothinkster/golang-gin-realworld-example-app/users"
 )
 
 type ArticleModelValidator struct {

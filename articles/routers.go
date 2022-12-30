@@ -2,11 +2,12 @@ package articles
 
 import (
 	"errors"
-	"github.com/gothinkster/golang-gin-realworld-example-app/common"
-	"github.com/gothinkster/golang-gin-realworld-example-app/users"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/TsaiYenYu/Golang_learning/common"
+	"github.com/TsaiYenYu/Golang_learning/users"
+	"github.com/gin-gonic/gin"
 )
 
 func ArticlesRegister(router *gin.RouterGroup) {
